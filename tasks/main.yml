@@ -1,0 +1,36 @@
+---
+
+- name: Download Homemaker x86_64 tarball for Linux system
+  get_url:
+    url: "https://foosoft.net/projects/homemaker/dl/homemaker_linux_amd64.tar.gz"
+    dest: /var/tmp/homemaker_linux_amd64.tar.gz
+  when:
+    - ansible_system == 'Linux'
+    - ansible_architecture == 'x86_64'
+  tags:
+    - homemaker
+
+- name: Unarchive Homemaker x86_64 tarball for Linux system
+  unarchive:
+    src: /var/tmp/homemaker_linux_amd64.tar.gz
+    dest: /var/tmp
+    copy: no
+  when:
+    - ansible_system == 'Linux'
+    - ansible_architecture == 'x86_64'
+  tags:
+    - homemaker
+
+- name: Copy Homemaker x86_64 binary for Linux system to /usr/local/bin
+  copy:
+    src: /var/tmp/homemaker_linux_amd64/homemaker
+    dest: /usr/local/bin/homemaker
+    owner: root
+    group: root
+    mode: 0755
+    remote_src: True
+  when:
+    - ansible_system == 'Linux'
+    - ansible_architecture == 'x86_64'
+  tags:
+    - homemaker
